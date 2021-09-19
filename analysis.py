@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 np.set_printoptions(suppress=True,threshold=np.inf)
 import argparse
 import sys
-
+from draw import *
 def get_args():
 	'''
 	return some argument.
@@ -88,8 +88,18 @@ def draw_fraction_of_first_time(pmtid , hittime , pmtmap,isCerenkov, isOriginalO
 		z.append(pmtmap[k,3])
 		y.append(pmtmap[k,2])
 		x.append(pmtmap[k,1])
+	'''
+	for i in range(len(f)):
+		if f[i] < 0.2:
+			f[i] = 0
+	'''
+
 	if debug:
 		print("fraction==",f)
+	plt_local,fig,ax = draw_scatter_3d(plt=plt,x=x,y=y,z=z,value=f,x_label="x(mm)",y_label="y(mm)",z_label="z(mm)")
+	plt_local.show()
+
+	'''
 	fig = plt.figure()
 	ax = plt.axes(projection ='3d')
 	imag = ax.scatter(x,y,z,c=f,cmap=plt.hot())
@@ -98,7 +108,7 @@ def draw_fraction_of_first_time(pmtid , hittime , pmtmap,isCerenkov, isOriginalO
 	ax.set_zlabel("z(mm)")
 	fig.colorbar(imag)
 	plt.show()
-	
+	'''
 		       
 
 def draw_first_hit(pmtid , hittime , pmtmap,isCerenkov, isOriginalOP,debug=0):
@@ -278,6 +288,7 @@ if __name__ == "__main__":
 	if args.mode == 3:
 		caculate_pe_of_prd()
 		sys.exit()
+
 	a = np.loadtxt(args.pmtmapfile)
 	print("a.shape == ",a.shape)
 	modify_pmtmap(a)
